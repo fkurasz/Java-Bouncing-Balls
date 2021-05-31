@@ -2,13 +2,16 @@ package com.company;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Main extends JPanel{
 
     int SIZE = 10;
-    int SPEED = 5;
+    int SPEED = 3;
 
-    int x =0, y =0;
+    int x = ThreadLocalRandom.current().nextInt(1,801);
+    int y = ThreadLocalRandom.current().nextInt(1,801);
+    //int x =0, y =0;
     int angleX = SPEED, angleY = SPEED;
 
     private void move()
@@ -40,7 +43,7 @@ public class Main extends JPanel{
         JFrame frame = new JFrame("Balls");
         Main main_class = new Main();
         frame.add(main_class);
-        frame.setSize(400,400);
+        frame.setSize(800,800);
         frame.setVisible(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -51,5 +54,10 @@ public class Main extends JPanel{
             main_class.repaint();
             Thread.sleep(10);
         }
+    }
+
+    public static class Ball extends Thread
+    {
+
     }
 }
