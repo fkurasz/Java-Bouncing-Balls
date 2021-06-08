@@ -2,15 +2,25 @@ package com.company;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class Main extends JPanel{
+public class Main extends JPanel implements Runnable{
 
-    int SIZE = 10;
-    int SPEED = 3;
+    Main(JFrame frame){
+        frame.add(this);
+        frame.setSize(1000, 800);
+        frame.setVisible(true);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
 
-    int x = ThreadLocalRandom.current().nextInt(1,801);
-    int y = ThreadLocalRandom.current().nextInt(1,801);
+    int SIZE = 50;
+    int SPEED = 10;
+
+    Random losowanie = new Random();
+
+    int x = losowanie.nextInt(800)+1;
+    int y = losowanie.nextInt(800)+1;
     //int x =0, y =0;
     int angleX = SPEED, angleY = SPEED;
 
@@ -38,26 +48,26 @@ public class Main extends JPanel{
         g.fillOval(x,y,SIZE,SIZE);
     }
 
-    public static void main(String[] args) throws InterruptedException{
-
-        JFrame frame = new JFrame("Balls");
-        Main main_class = new Main();
-        frame.add(main_class);
-        frame.setSize(800,800);
-        frame.setVisible(true);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-
-        while (true)
-        {
-            main_class.move();
-            main_class.repaint();
-            Thread.sleep(10);
+    @Override
+    public void run() {
+        while (true) {
+            this.move();
+            this.repaint();
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 
-    public static class Ball extends Thread
-    {
+    public static void main(String[] args) throws InterruptedException{
+        JFrame frame = new JFrame("Balls");
 
+        new Thread(new Main(frame)).start();
+        System.out.println("thread");
+
+        new Thread(new Main(frame)).start();
+        System.out.println("thread2");
     }
 }
