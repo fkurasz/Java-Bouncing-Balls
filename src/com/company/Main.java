@@ -7,8 +7,12 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class Main extends JPanel implements Runnable {
 
+    public static int WIDTH = 1400;
+    public static int HEIGHT = 800;
+    int SPEED = 1;
 
     Main(JFrame frame, Color col) {
+        frame.setResizable(false);
         this.setLayout(null);
         this.setOpaque(false);
         frame.add(this);
@@ -16,24 +20,26 @@ public class Main extends JPanel implements Runnable {
         color = col;
     }
 
-    public int SIZE = 50;
-    int SPEED = 1;
+    Random lossize = new Random();
+    public int SIZE = lossize.nextInt(40)+40;
 
     Random losowanie = new Random();
 
-    public int x = losowanie.nextInt(800) + 100;
-    public int y = losowanie.nextInt(600) + 100;
+    public int x = losowanie.nextInt(WIDTH - 200) + 100;
+    public int y = losowanie.nextInt(HEIGHT - 200) + 100;
     //int x =0, y =0;
     int angleX = SPEED, angleY = SPEED;
 
     private void move() {
         if (x + angleX < 0)
             angleX = SPEED;
-        else if (x + angleX > 987.5 - SIZE)
+        //else if (x + angleX > WIDTH - 1.25*SIZE)
+        else if (x + angleX > getWidth() - SIZE)
             angleX = -SPEED;
         else if (y + angleY < 0)
             angleY = SPEED;
-        else if (y + angleY > 770 - SIZE)
+        //else if (y + angleY > HEIGHT - 1.75*SIZE)
+        else if (y + angleY > getHeight() - SIZE)
             angleY = -SPEED;
 
         x = x + angleX;
@@ -56,7 +62,6 @@ public class Main extends JPanel implements Runnable {
             }
         }
     }
-
     Color color;
 
     @Override
@@ -72,7 +77,7 @@ public class Main extends JPanel implements Runnable {
     {
         JFrame frame = new JFrame("Balls");
         //JPanel panel = new Panel;
-        frame.setSize(1000, 800);
+        frame.setSize(WIDTH, HEIGHT);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         //Thread displ = new Thread(DisBall(frame));
@@ -95,6 +100,18 @@ public class Main extends JPanel implements Runnable {
 
         Thread ball6 = new Thread(new Main(frame, Color.magenta));
         ball6.start();
+
+        Thread ball7 = new Thread(new Main(frame, Color.GRAY));
+        ball7.start();
+
+        Thread ball8 = new Thread(new Main(frame, Color.pink));
+        ball8.start();
+
+        Thread ball9 = new Thread(new Main(frame, Color.darkGray));
+        ball9.start();
+
+        Thread ball10 = new Thread(new Main(frame, Color.black));
+        ball10.start();
 
         while(true)
         {
